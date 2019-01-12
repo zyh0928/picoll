@@ -1,2 +1,3 @@
-# picoll
-Web Application: Picture Collection
+## Picture Collection
+
+Web Application
