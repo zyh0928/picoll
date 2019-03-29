@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "/tmp/admin",
+    "baseUrl": "."
+  },
+  "exclude": ["node_modules"]
+}
