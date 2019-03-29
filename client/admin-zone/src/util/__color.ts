@@ -1,0 +1,41 @@
+export default class Color {
+  nadeshiko = "#dc9fb4"; // 撫子
+  momo = "#f596aa"; // 桃
+  sakura = "#fedfe1"; // 桜
+  enji = "#9f353a"; // 燕脂
+  kurenai = "#cb1b45"; // 紅
+  akabeni = "#cb4042"; // 赤紅
+  shinsyu = "#ab3b3a"; // 真朱
+  haizakura = "#d7c4bb"; // 灰桜
+  ginsyu = "#c73e3a"; // 銀朱
+  sharegaki = "#ffba84"; // 洒落柿
+  yamabuki = "#ffb11b"; // 山吹
+  tamago = "#f9bf45"; // 玉子
+  kanzo = "#fc9f4d"; // 萱草
+  nae = "#86c166"; // 苗
+  tokiwa = "#1b813e"; // 常磐
+  wakatake = "#5dac81"; // 若竹
+  aotake = "#00896c"; // 青竹
+  seiji = "#69b0ac"; // 青磁
+  seiheki = "#268785"; // 青碧
+  mizu = "#81c7d4"; // 水
+  asagi = "#33a6b8"; // 浅葱
+  sora = "#58b2dc"; // 空
+  chigusa = "#3a8fb7"; // 千草
+  gunjyo = "#51a8dd"; // 群青
+  ruri = "#005caf"; // 瑠璃
+  konkikyo = "#211e55"; // 紺桔梗
+  ouchi = "#9b90c2"; // 楝
+  kikyo = "#6a4c9c"; // 桔梗
+  shion = "#8f77b5"; // 紫苑
+  sumire = "#66327c"; // 菫
+  shironeri = "#fcfaf2"; // 白練
+  shironezumi = "#bdc0ba"; // 白鼠
+  ginnezumi = "#91989f"; // 銀鼠
+  hai = "#828282"; // 灰
+  nibi = "#656765"; // 鈍
+  binrojizome = "#3a3226"; // 檳榔子染
+  sumi = "#1c1c1c"; // 墨
+
+  [prop: string]: any;
+}
