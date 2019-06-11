@@ -8,6 +8,8 @@ module.exports = {
   username: "test",
   password: "test",
   database: "test",
+  connectTimeout: 30000,
+  acquireTimeout: 30000,
   synchronize: debug,
   entities: [dirModel]
 };
