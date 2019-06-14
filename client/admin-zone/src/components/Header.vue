@@ -70,7 +70,12 @@
       </v-list>
     </v-menu>
 
-    <v-btn :loading="loading" :disabled="loading" icon @click.stop="signOut">
+    <v-btn
+      :loading="outLoading"
+      :disabled="outLoading"
+      icon
+      @click.stop="signOut"
+    >
       <v-icon> power_settings_new </v-icon>
     </v-btn>
   </v-toolbar>
@@ -90,17 +95,10 @@ export default class Header extends Vue {
   readonly resource!: string;
 
   @State
-  readonly langs: any;
+  readonly langs!: any[];
 
-  themes = [
-    {
-      id: "light",
-      name: "Light",
-      color: {
-        primary: "#ab3b3a"
-      }
-    }
-  ];
+  @State
+  readonly themes!: any[];
 
   @Emit("update:dark")
   changeBright() {
@@ -111,7 +109,7 @@ export default class Header extends Vue {
     return flag;
   }
 
-  loading = !1;
+  outLoading = !1;
 
   setTheme(id: string) {
     localStorage.theme = id;
@@ -124,39 +122,67 @@ export default class Header extends Vue {
 
   setLang(lang: string) {
     localStorage.lang = lang;
+    document.documentElement.lang = lang;
+
     this.$i18n.locale = lang;
   }
 
   async signOut() {
-    if (this.loading) return;
+    if (this.outLoading) return;
 
     try {
-      this.$emit("update:dark", !1);
-      this.loading = !0;
+      this.outLoading = !0;
       await this.$store.dispatch("user/logout");
-      this.loading = !1;
+      this.outLoading = !1;
 
       this.$vuetify.theme = getTheme();
       this.$router.push("/login");
     } catch (e) {
-      this.loading = !1;
+      this.outLoading = !1;
       throw e;
     }
   }
 
-  @Emit("update:dark")
   created() {
-    let theme = this.themes[0].id;
-    let lang = this.langs[0].code;
-    let dark = !1;
+    let lang;
+    let theme;
+    let dark;
+    switch (navigator.language.substring(0, 2)) {
+      case "zh":
+        lang = this.langs[0].code;
+        break;
 
-    theme = localStorage.theme || theme;
-    lang = localStorage.lang || lang;
-    if (localStorage.dark) dark = localStorage.dark === "true" ? !0 : !1;
+      // en
+      default:
+        lang = this.langs[1].code;
+        break;
+    }
+
+    try {
+      if (!localStorage.lang)
+        switch (navigator.language.substring(0, 2)) {
+          case "zh":
+            lang = this.langs[0].code;
+            break;
+
+          // en
+          default:
+            lang = this.langs[1].code;
+            break;
+        }
+      else lang = localStorage.lang;
+
+      theme = !localStorage.theme ? this.themes[0].id : localStorage.theme;
+      dark = localStorage.dark === "true" ? !0 : !1;
+    } catch {
+      let lang = this.langs[0].code;
+      let theme = this.themes[0].id;
+      let dark = !1;
+    }
 
     this.setTheme(theme);
     this.setLang(lang);
-    return dark;
+    this.$emit("update:dark", dark);
   }
 }
 </script>

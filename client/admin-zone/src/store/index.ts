@@ -9,7 +9,7 @@ import { vuexRouterInterceptor } from "@/util";
 
 Vue.use(Vuex);
 
-const store = new Store<State>({
+const store = new Vuex.Store({
   state: new State(),
   getters,
   actions,

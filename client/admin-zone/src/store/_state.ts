@@ -31,8 +31,8 @@ export default class State {
   readonly "domain.resource" = "https://resource.wjbzg.com/";
 
   readonly langs = [
-    { code: "zh-CN", label: "简体中文" },
-    { code: "en-US", label: "English" }
+    { code: "zh-Hans", label: "简体中文" },
+    { code: "en", label: "English" }
   ];
 
   drawer = !0;
@@ -40,6 +40,16 @@ export default class State {
   loading: Loading = { icon: "heart", i18n: {} };
 
   notification: Notification = { i18n: {} };
+
+  readonly themes = [
+    {
+      id: "light",
+      name: "Light",
+      color: {
+        primary: "#ab3b3a"
+      }
+    }
+  ];
 
   readonly icons = [
     "azure",

@@ -24,15 +24,15 @@ Vue.prototype.$util = util;
 Vue.config.errorHandler = async (e, vm) => {
   await vm.$store.dispatch("sayWhoops", e);
 
-  if (typeof e === "number" && e === 1000) {
+  if (typeof e === "number" && e === 403) {
     await vm.$store.dispatch("clearInfo");
     vm.$router.push("/login");
   }
 };
 
-Vue.config.productionTip = !0;
+// Vue.config.productionTip = !1;
 
-new Vue({
+export default new Vue({
   router,
   store,
   i18n,

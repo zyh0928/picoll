@@ -1,5 +1,6 @@
 import axios from "axios";
 import getSign from "./_get-sign";
+import vm from "@/main";
 
 export default (
   url = "",
@@ -10,20 +11,26 @@ export default (
     try {
       const sign = getSign();
 
-      resolve(
-        await axios({
-          method,
-          url,
-          data,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "User-ID": sign.id,
-            "User-Token": sign.token
-          }
-        })
-      );
+      const resp = await axios({
+        method,
+        url,
+        data,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "User-ID": sign.id,
+          "User-Token": sign.token
+        }
+      });
+
+      const { error, result } = resp.data;
+
+      if (error) throw error;
+
+      resolve(result);
     } catch (e) {
-      reject(e);
+      if (typeof e === "number") reject(e);
+      else if (e.constructor === Error) reject(e.response.status);
+      else reject("unknown");
     }
   });

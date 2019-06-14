@@ -10,44 +10,22 @@ const actions: ActionTree<State, RootState> = {
 
     if (isEmpty(state.profile)) await dispatch("getProfile");
 
-    const resp = await sendRequest(mapApiRouter("user/verify"));
-
-    const { error } = resp.data;
-
-    if (error) throw error;
-
-    return !0;
+    return await sendRequest(mapApiRouter("user/verify"));
   },
 
   login: async ({ rootGetters: { mapApiRouter } }, data) => {
-    const resp = await sendRequest(mapApiRouter("user/login"), "post", data);
-
-    const { error, result } = resp.data;
-
-    if (error) throw error;
+    const result = await sendRequest(mapApiRouter("user/login"), "post", data);
 
     localStorage.user = JSON.stringify(result);
   },
 
   logout: async ({ dispatch, rootGetters: { mapApiRouter } }) => {
-    const resp = await sendRequest(mapApiRouter("user/logout"));
-
-    const { error } = resp.data;
-
-    if (error) throw error;
-
+    await sendRequest(mapApiRouter("user/logout"));
     await dispatch("clearInfo", null, { root: !0 });
   },
 
-  getProfile: async ({ commit, rootGetters: { mapApiRouter } }) => {
-    const resp = await sendRequest(mapApiRouter("user/profile"));
-
-    const { error, result } = resp.data;
-
-    if (error) throw error;
-
-    commit("setProfile", result);
-  }
+  getProfile: async ({ commit, rootGetters: { mapApiRouter } }) =>
+    commit("setProfile", await sendRequest(mapApiRouter("user/profile")))
 };
 
 export default actions;

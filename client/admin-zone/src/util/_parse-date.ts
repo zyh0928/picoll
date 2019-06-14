@@ -1,4 +1,4 @@
-export default (value: any, locale = "zh-CN"): string => {
+export default (value: any, locale = "zh-Hans"): string => {
   let milliseconds = typeof value === "number" ? value : parseInt(value);
 
   if (isNaN(milliseconds)) milliseconds = 0;

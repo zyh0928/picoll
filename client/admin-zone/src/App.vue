@@ -11,7 +11,7 @@
           leave-active-class="animated fast zoomOut"
           mode="out-in"
         >
-          <router-view />
+          <router-view :dark.sync="dark" />
         </transition>
 
         <transition
@@ -106,5 +106,9 @@ export default class App extends Vue {
 
   @Mutation
   setNotification!: Function;
+
+  created() {
+    this.$store.dispatch("sayOkay", "common.title");
+  }
 }
 </script>

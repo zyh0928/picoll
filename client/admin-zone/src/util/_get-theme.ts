@@ -1,5 +1,7 @@
 import Color from "./__color";
 
+import store from "@/store";
+
 export default (data: any = {}) => {
   const {
     primary = "#ab3b3a", // 真朱

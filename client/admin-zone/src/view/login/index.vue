@@ -84,8 +84,8 @@
           />
 
           <v-btn
-            :disabled="loading"
-            :loading="loading"
+            :disabled="inLoading"
+            :loading="inLoading"
             @click.stop="signIn"
             block
             class="mt-3"
@@ -123,7 +123,7 @@ export default class Login extends Vue {
   password = "";
   visibility = !1;
 
-  loading = !1;
+  inLoading = !1;
 
   clickImg() {
     this.changeImg();
@@ -145,11 +145,13 @@ export default class Login extends Vue {
 
   setLang(lang: string) {
     localStorage.lang = lang;
+    document.documentElement.lang = lang;
+
     this.$i18n.locale = lang;
   }
 
   async signIn() {
-    if (this.loading) return;
+    if (this.inLoading) return;
 
     const flagAccount = await this.$validator.validate("user.account");
     const flagPassword = await this.$validator.validate("user.password");
@@ -157,24 +159,41 @@ export default class Login extends Vue {
     if (!valid) return;
 
     try {
-      this.loading = !0;
+      this.inLoading = !0;
       await this.$store.dispatch("user/login", {
         account: this.account,
         password: this.password
       });
-      this.loading = !1;
+      this.inLoading = !1;
 
       this.$router.push("/home");
     } catch (e) {
-      this.loading = !1;
+      this.inLoading = !1;
       throw e;
     }
   }
 
-  created() {
-    let lang = this.langs[0].code;
+  async created() {
+    await this.$emit("update:dark", !1);
 
-    lang = localStorage.lang || lang;
+    let lang;
+
+    try {
+      if (!localStorage.lang)
+        switch (navigator.language.substring(0, 2)) {
+          case "zh":
+            lang = this.langs[0].code;
+            break;
+
+          // en
+          default:
+            lang = this.langs[1].code;
+            break;
+        }
+      else lang = localStorage.lang;
+    } catch {
+      lang = this.langs[0].code;
+    }
 
     this.setLang(lang);
   }

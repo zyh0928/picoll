@@ -27,23 +27,32 @@ const actions: ActionTree<State, State> = {
     commit("setLoading", { show: !0, background, size, icon, i18n, color });
   },
 
-  sayOkay: ({ commit }, key) => {
-    const i18n = typeof key === "string" ? { key } : key;
+  sayOkay: async ({ dispatch, commit }, data) => {
+    try {
+      const { key, values } = data;
 
-    commit("setNotification", { show: !0, color: "success", i18n });
+      let i18n = {};
+      if (typeof data === "string") i18n = { key: data };
+      else if (typeof key === "string") i18n = { key, values };
+      else throw "Try to say OK has failed.";
+
+      commit("setNotification", { show: !0, color: "success", i18n });
+    } catch (e) {
+      await dispatch("sayWhoops", e);
+    }
   },
 
   sayWhoops: ({ commit }, error) => {
     const { key, values } = error;
 
-    let i18n;
+    let i18n: any = {};
 
-    if (typeof key === "string") i18n = { key, values };
-    else if (typeof error === "number") i18n = { key: `errmsg.${error}` };
-    else if (typeof error === "string")
-      i18n = { key: $i18n.te(`errmsg.${error}`) ? `errmsg.${error}` : error };
-    else if (error.constructor === Error)
-      i18n = { key: "errmsg.http", values: [error.response.status] };
+    if (typeof error === "number" || typeof error === "string")
+      i18n.key = $i18n.te(`errmsg.${error}`) ? `errmsg.${error}` : error;
+    else if (typeof key === "number" || typeof key === "string")
+      i18n = $i18n.te(`errmsg.${key}`)
+        ? { key: `errmsg.${key}`, values }
+        : { key, values };
     else i18n = { key: "errmsg.unknown" };
 
     commit("setNotification", { show: !0, color: "error", i18n });
